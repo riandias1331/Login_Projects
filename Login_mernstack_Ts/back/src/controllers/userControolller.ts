@@ -1,11 +1,21 @@
 import { Request, Response } from "express";
 import User, { IUser } from "../models/userModels";
 
+
+export const getUserAll = async (req: Request, res: Response) => {
+    try {
+        const users: IUser[] = await User.find()
+        res.status(200).json(users)
+    } catch (error) {
+        res.status(500).json({ message: (error as Error).message })
+    }
+}
+
 export const register = async (req: Request, res: Response) => {
     try {
-        const { name, email, password } = req.body as { name: string, email: string, password: string }
+        const { username, email, password } = req.body as { username: string, email: string, password: string }
         const user = await User.create({
-            name,
+            username,
             email,
             password
         });
@@ -33,3 +43,16 @@ export const login = async (req: Request, res: Response) => {
     }
 }
 
+export const deleteUserAll = async (req: Request, res: Response) => {
+    try {
+        const user = await User.deleteMany()
+
+        if (!User) {
+            res.status(400).json({ message: "Users not found" })
+        }
+
+        res.status(200).json({ message: "Users  deleted" })
+    } catch (error) {
+        res.status(500).json({ message: (error as Error).message })
+    }
+}
