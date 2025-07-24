@@ -3,6 +3,8 @@ const route = express.Router()
 
 const userController = require("./src/controllers/userController.js")
 
+// listar usuários
+route.get('/users', userController.getUsers);
 
 // Rota de Cadastro
 route.post('/register', userController.register);

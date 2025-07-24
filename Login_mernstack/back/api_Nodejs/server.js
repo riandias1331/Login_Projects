@@ -2,19 +2,21 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const port = process.env.PORT || 3333
-const route = require('./route')
+const route = require('./routes')
 const mongoose = require('mongoose')
+const cors = require('cors')
 
 
 // Middlewares
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 
 // Route
-app.use(route)
+app.use( "/api", route)
 
 // Database
-mongoose.connect(process.env.CONNECTION)
+mongoose.connect(process.env.DATABASE_URL)
     .then(() => {
         console.log('Connected')
         app.emit('DataBase')
